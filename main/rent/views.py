@@ -6,20 +6,24 @@ from main.serializers import *
 from flask import jsonify, request
 from flask_apispec import use_kwargs, marshal_with
 from flask.views import MethodView
-from flask_apispec import MethodResource
+from flask_apispec.views import MethodResource
+from main.base_view import BaseView
 
 
-class OrderView(MethodView):
-    def __init__(self, model):
-        self.model = model
-
-    def _get_item(self, id):
-        return self.model.query.get(id)
+class OrdersView(BaseView):
+    def __init__(self):
+        self.model = Order
 
     def get(self, id=None):
-        if id is not None:
-            return jsonify(order_schema.dump(self.model.query.get(id)))
-        return jsonify(orders_schema.dump(self.model.query.all()))
+        return jsonify(orders_schema.dump(self.model.query.order_by(self.model.id.desc()).all()))
+
+
+class OrderView(BaseView):
+    def __init__(self):
+        self.model = Order
+
+    def get(self, id):
+        return jsonify(order_schema.dump(self.model.query.get(id)))
     
     @jwt_required()
     @use_kwargs(OrderSerializer)
@@ -47,8 +51,7 @@ class OrderView(MethodView):
         return '', 204
 
 
-bp.add_url_rule(f"/order/<int:id>", view_func=OrderView.as_view('order-detail', Order))
-docs.register(OrderView, blueprint=bp.name)
-bp.add_url_rule(f"/order/", view_func=OrderView.as_view('order', Order))
-docs.register(OrderView, blueprint=bp.name)
+OrderView.register(bp, docs, "/order/<int:id>", "orderview")
+OrdersView.register(bp, docs, "/orders", "ordersview")
+
 

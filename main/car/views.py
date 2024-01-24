@@ -6,21 +6,25 @@ from main.serializers import *
 from flask import jsonify, request
 from flask_apispec import use_kwargs, marshal_with
 from flask.views import MethodView
-from flask_apispec import MethodResource
+from flask_apispec.views import MethodResource
 from main import docs
+from main.base_view import BaseView
 
 
-class CategoryView(MethodView):
-    def __init__(self, model):
-        self.model = model
+class CategoriesView(BaseView):
+    def __init__(self):
+        self.model = Category
 
-    def _get_item(self, id):
-        return self.model.query.get(id)
-
-    def get(self, id=None):
-        if id is not None:
-            return jsonify(category_schema.dump(self.model.query.get(id)))
+    def get(self):
         return jsonify(categories_schema.dump(self.model.query.all()))
+
+
+class CategoryView(BaseView):
+    def __init__(self):
+        self.model = Category
+
+    def get(self, id):
+        return jsonify(category_schema.dump(self.model.query.get(id)))
     
     @jwt_required()
     @use_kwargs(CategorySerializer)
@@ -43,19 +47,25 @@ class CategoryView(MethodView):
         db.session.delete(category)
         db.session.commit()
         return '', 204
-    
 
-class ImageView(MethodView):
-    def __init__(self, model):
-        self.model = model
+
+class CarImagesView(BaseView):
+    def __init__(self):
+        self.model = Image
+
+    def get(self, car_id):
+        return jsonify(images_schema.dump(self.model.query.filter_by(car_id=car_id).all()))
+
+
+class ImageView(BaseView):
+    def __init__(self):
+        self.model = Image
 
     def _get_item(self, id):
         return self.model.query.get(id)
 
     def get(self, id=None):
-        if id is not None:
-            return jsonify(image_schema.dump(self.model.query.get(id)))
-        return jsonify(images_schema.dump(self.model.query.all()))
+        return jsonify(image_schema.dump(self.model.query.get(id)))
     
     @jwt_required()
     @use_kwargs(ImageSerializer)
@@ -78,11 +88,27 @@ class ImageView(MethodView):
         db.session.delete(image)
         db.session.commit()
         return '', 204
-    
 
-class CarView(MethodView):
-    def __init__(self, model):
-        self.model = model
+
+class CarsByCategoryView(BaseView): 
+    def __init__(self):
+        self.model = Car
+
+    def get(self, category_id):
+        return jsonify(cars_schema.dump(self.model.query.filter_by(category_id=category_id).order_by(self.model.id.desc()).all()))
+
+
+class CarsView(BaseView): 
+    def __init__(self):
+        self.model = Car
+
+    def get(self):
+        return jsonify(cars_schema.dump(self.model.query.order_by(self.model.id.desc()).all()))
+
+
+class CarView(BaseView):
+    def __init__(self):
+        self.model = Car
 
     def _get_item(self, id):
         return self.model.query.get(id)
@@ -90,7 +116,7 @@ class CarView(MethodView):
     def get(self, id=None):
         if id is not None:
             return jsonify(car_schema.dump(self.model.query.get(id)))
-        return jsonify(cars_schema.dump(self.model.query.all()))
+        return jsonify(cars_schema.dump(self.model.query.order_by(self.model.id.desc()).all()))
     
     @jwt_required()
     @use_kwargs(CarSerializer)
@@ -115,17 +141,11 @@ class CarView(MethodView):
         return '', 204
 
 
-bp.add_url_rule(f"/category/<int:id>", view_func=CategoryView.as_view('category-detail', Category))
-docs.register(CategoryView, blueprint=bp.name)
-bp.add_url_rule(f"/category/", view_func=CategoryView.as_view('category', Category))
-docs.register(CategoryView, blueprint=bp.name)
-bp.add_url_rule(f"/image/<int:id>", view_func=ImageView.as_view('image-detail', Image))
-docs.register(ImageView, blueprint=bp.name)
-bp.add_url_rule(f"/image/", view_func=ImageView.as_view('image', Image))
-docs.register(ImageView, blueprint=bp.name)
-bp.add_url_rule(f"/car/<int:id>", view_func=CarView.as_view('car-detail', Car))
-docs.register(CarView, blueprint=bp.name)
-bp.add_url_rule(f"/car/", view_func=CarView.as_view('car', Car))
-docs.register(CarView, blueprint=bp.name)
-
+CategoryView.register(bp, docs, "/category/<int:id>", "categoryview")
+CategoriesView.register(bp, docs, "/categories", "categoriesview")
+CarImagesView.register(bp, docs, "/images/<int:car_id>", "carimagesview")
+ImageView.register(bp, docs, "/image/<int:id>", "imageview")
+CarsByCategoryView.register(bp, docs, "/cars/<int:category_id>", "carsbycategoryview")
+CarView.register(bp, docs, "/car/<int:id>", "carview")
+CarsView.register(bp, docs, "/cars", "carsview")
 

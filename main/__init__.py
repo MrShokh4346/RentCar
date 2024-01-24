@@ -11,10 +11,9 @@ from flask_cors import CORS
 from flask_apispec.extension import FlaskApiSpec
 from apispec import APISpec
 from apispec.ext.marshmallow import MarshmallowPlugin
-
+from apispec_webframeworks.flask import FlaskPlugin
 
 load_dotenv()
-
 
 naming_convention = {
         "ix": 'ix_%(column_0_label)s',
@@ -29,7 +28,6 @@ migrate = Migrate()
 ma = Marshmallow()
 jwt = JWTManager()
 docs = FlaskApiSpec()
-
 
 
 def create_app():
@@ -59,6 +57,7 @@ def create_app():
     migrate.init_app(app, db)
     jwt.init_app(app)
 
+
     from main.car import bp as car_bp
     app.register_blueprint(car_bp, url_prefix="/car/v1")
 
@@ -68,7 +67,7 @@ def create_app():
     from main.auth import bp as auth_bp
     app.register_blueprint(auth_bp, url_prefix="/auth/v1")
 
-    # docs.init_app(app)
+    docs.init_app(app)
 
     from main.models import Admin
     @app.cli.command('createadmin')

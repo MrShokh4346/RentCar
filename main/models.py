@@ -84,10 +84,11 @@ class Order(db.Model):
     contact_number = db.Column(db.String)
     delivery = db.Column(db.Boolean)
     status = db.Column(db.Boolean)
-    from_date = db.Column(db.DateTime, default=datetime.now())
+    from_date = db.Column(db.DateTime)
     to_date = db.Column(db.DateTime)
     car_brand = db.Column(db.String)
     car_model = db.Column(db.String)
+    child_sit = db.Column(db.Boolean, default=False)
     car = db.relationship('Car', back_populates='order', lazy=True)
     car_id = db.Column(db.Integer, db.ForeignKey("car.id", ondelete="SET NULL"))
 
