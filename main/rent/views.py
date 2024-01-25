@@ -16,14 +16,6 @@ class OrdersView(BaseView):
 
     def get(self, id=None):
         return jsonify(orders_schema.dump(self.model.query.order_by(self.model.id.desc()).all()))
-
-
-class OrderView(BaseView):
-    def __init__(self):
-        self.model = Order
-
-    def get(self, id):
-        return jsonify(order_schema.dump(self.model.query.get(id)))
     
     @jwt_required()
     @use_kwargs(OrderSerializer)
@@ -35,6 +27,14 @@ class OrderView(BaseView):
         db.session.add(order)
         db.session.commit()
         return jsonify(msg="Created")
+
+
+class OrderView(BaseView):
+    def __init__(self):
+        self.model = Order
+
+    def get(self, id):
+        return jsonify(order_schema.dump(self.model.query.get(id)))
     
     @jwt_required()
     @use_kwargs(OrderSerializer)
