@@ -1,0 +1,72 @@
+Dubai
+Abu Dhabi
+Sharjah
+Al Ain
+Ajman
+Ras Al Khaimah	
+Fujairah	
+Umm Al Quwain	
+Kalba	
+Madinat Zayed
+Khor Fakkan
+Dibba Al-Fujairah
+Ruwais
+Ghayathi
+Dhaid	
+Jebel Ali
+Liwa Oasis
+Hatta	
+Ar-Rams
+Dibba Al-Hisn
+Al Jazirah Al Hamra
+Abu al Abyad		 Abu Dhabi
+Adhen	4,516	 Ras Al Khaimah
+Al Ajban		 Abu Dhabi
+Al Aryam		 Abu Dhabi
+Al Awir	8,457	 Dubai
+Al Badiyah	7,153	 Fujairah
+Al Bataeh	3,958	 Sharjah
+Al Bithnah		 Fujairah
+Al Faqa	2,291	 Abu Dhabi and  Dubai
+Al Halah		 Fujairah
+Al Hamraniyah		 Ras Al Khaimah
+Al Hamriyah	3,297	 Sharjah
+Al Jeer		 Ras Al Khaimah
+Al Khawaneej	8,222	 Dubai
+Al Lisaili	2,514	 Dubai
+Al Madam	8,652	 Sharjah
+Al Manama	5,823	 Ajman
+Al Mirfa	9,111	 Abu Dhabi
+Al Qusaidat		 Ras Al Khaimah
+Al Qor		 Ras Al Khaimah
+Al Salamah		 Umm al-Quwain
+Al Shuwaib		 Abu Dhabi
+Al Rafaah	2,704	 Umm al-Quwain
+Al Rashidya		 Umm al-Quwain
+Al Ruwayyah	6,984	 Dubai
+Al Yahar		 Abu Dhabi
+Asimah		 Ras Al Khaimah
+Dalma	5,000	 Abu Dhabi
+Dadna		 Fujairah
+Digdaga		 Ras Al Khaimah
+Falaj Al Mualla	4,253	 Umm al-Quwain
+Ghalilah		 Ras Al Khaimah
+Ghayl	4,792	 Ras Al Khaimah
+Ghub		 Fujairah
+Habshan		 Abu Dhabi
+Huwaylat		 Ras Al Khaimah
+Khatt		 Ras Al Khaimah
+Khor Khwair		 Ras Al Khaimah
+Lahbab	4,490	 Dubai
+Marawah		 Abu Dhabi
+Masafi	7,637	 Ras Al Khaimah and  Fujairah
+Masfut	8,988	 Ajman
+Mirbah		 Fujairah
+Mleiha	4,768	 Sharjah
+Nahil		 Abu Dhabi
+Qidfa		 Fujairah
+Sha'am	1,550	 Ras Al Khaimah
+Sila	7,900	 Abu Dhabi
+Sweihan	5,403	 Abu Dhabi
+Wadi Shah		 Ras Al Khaimah
+Zubarah

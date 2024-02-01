@@ -1,7 +1,7 @@
 from main import db
 from datetime import datetime
 from werkzeug.security import generate_password_hash
-
+from sqlalchemy.orm import validates 
 
 
 class Admin(db.Model):
@@ -29,6 +29,10 @@ class Category(db.Model):
             db.session.commit()
         except:
             raise
+
+    @validates('name')
+    def validate_name(self, key, name):
+        return name.lower()
 
 
 class Car(db.Model):
@@ -62,6 +66,14 @@ class Car(db.Model):
             db.session.commit()
         except:
             raise
+    
+    @validates('model')
+    def validate_model(self, key, model):
+        return model.lower()
+    
+    @validates('brand')
+    def validate_brand(self, key, brand):
+        return brand.lower()
 
 
 class Image(db.Model):
@@ -86,6 +98,8 @@ class Order(db.Model):
     status = db.Column(db.Boolean)
     from_date = db.Column(db.DateTime)
     to_date = db.Column(db.DateTime)
+    from_destination = db.Column(db.String)
+    to_destination = db.Column(db.String)
     car_brand = db.Column(db.String)
     car_model = db.Column(db.String)
     child_sit = db.Column(db.Boolean, default=False)
@@ -107,6 +121,38 @@ class Order(db.Model):
             self.car_brand = kwargs.get('car_brand', self.car_brand)
             self.car_model = kwargs.get('car_model', self.car_model)
             self.car_id = kwargs.get('car_id', self.car_id)
+            db.session.commit()
+        except:
+            raise
+
+
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.String)
+    author = db.Column(db.String)
+
+    @validates('author')
+    def validate_brand(self, key, author):
+        comment = Comment.query.filter_by(author=author.lower()).first()
+        if comment:
+            raise AssertionError("This email already exists")
+        return author.lower()
+    
+
+class City(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+
+    @validates('name')
+    def validate_brand(self, key, name):
+        city = City.query.filter_by(name=name.lower()).first()
+        if city:
+            raise AssertionError("This city already exists")
+        return name.lower()
+
+    def update(self, **kwargs):
+        try:
+            self.name = kwargs.get('name', self.name)
             db.session.commit()
         except:
             raise

@@ -22,7 +22,7 @@ class CategoriesView(BaseView):
         category = self.model(**kwargs)
         db.session.add(category)
         db.session.commit()
-        return jsonify(msg="Created")
+        return '', 204
 
 
 class CategoryView(BaseView):
@@ -35,13 +35,13 @@ class CategoryView(BaseView):
     @jwt_required()
     @use_kwargs(CategorySerializer)
     def put(self, id, **kwargs):
-        category = self._get_item(id)
+        category = self.model.query.get(id)
         category.update(**kwargs)
         return '', 204
     
     @jwt_required()
     def delete(self, id):
-        category = self._get_item(id)
+        category = self.model.query.get(id)
         db.session.delete(category)
         db.session.commit()
         return '', 204
@@ -65,7 +65,7 @@ class ImagePostView(BaseView):
         image = self.model(**kwargs)
         db.session.add(image)
         db.session.commit()
-        return jsonify(msg="Created")
+        return '', 204
 
 
 class ImageView(BaseView):
@@ -77,15 +77,7 @@ class ImageView(BaseView):
 
     def get(self, id=None):
         return jsonify(image_schema.dump(self.model.query.get(id)))
-    
-    @jwt_required()
-    @use_kwargs(ImageSerializer)
-    def post(self, **kwargs):
-        image = self.model(**kwargs)
-        db.session.add(image)
-        db.session.commit()
-        return jsonify(msg="Created")
-    
+
     @jwt_required()
     @use_kwargs(ImageSerializer)
     def put(self, id, **kwargs):
@@ -122,7 +114,7 @@ class CarsView(BaseView):
         car = self.model(**kwargs)
         db.session.add(car)
         db.session.commit()
-        return jsonify(msg="Created")
+        return '', 204
 
 
 class CarView(BaseView):
@@ -152,6 +144,14 @@ class CarView(BaseView):
         return '', 204
 
 
+class SearchView(BaseView):
+    def __init__(self):
+        self.model = Car
+
+    def get(self, name):
+        return jsonify(cars_schema.dump(self.model.query.filter((self.model.model.like(f"%{name}%")) | (self.model.brand.like(f"%{name}%"))).order_by(self.model.id.desc()).all()))
+
+
 CategoryView.register(bp, docs, "/category/<int:id>", "categoryview")
 CategoriesView.register(bp, docs, "/categories", "categoriesview")
 CarImagesView.register(bp, docs, "/images/<int:car_id>", "carimagesview")
@@ -160,4 +160,4 @@ ImagePostView.register(bp, docs, "/image", "imagepostview")
 CarsByCategoryView.register(bp, docs, "/cars/<int:category_id>", "carsbycategoryview")
 CarView.register(bp, docs, "/car/<int:id>", "carview")
 CarsView.register(bp, docs, "/cars", "carsview")
-
+SearchView.register(bp, docs, "/search/<string:name>", "searchview")

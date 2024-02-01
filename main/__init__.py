@@ -69,15 +69,26 @@ def create_app():
 
     docs.init_app(app)
 
+
     from main.models import Admin
     @app.cli.command('createadmin')
-    def createadmin():
+    def createadmin():  
         username = input("username: ")
         password = input("password: ")
         user = Admin(username=username, password=password)
         with app.app_context():
             db.session.add(user)
             db.session.commit()
+
+    from main.models import City
+    @app.cli.command('addcity')
+    def addcity():  
+        cities = ['Dubai', 'Abu Dhabi', 'Sharjah', 'Al Ain', 'Ajman', 'Ras Al Khaimah', 'Fujairah', 'Umm Al Quwain', 'Kalba', 'Madinat Zayed', 'Khor Fakkan', 'Dibba Al-Fujairah', 'Ruwais', 'Ghayathi', 'Dhaid', 'Jebel Ali', 'Liwa Oasis', 'Hatta', 'Ar-Rams', 'Dibba Al-Hisn', 'Al Jazirah Al Hamra', 'Abu al Abyad', 'Adhen', 'Al Ajban', 'Al Aryam', 'Al Awir', 'Al Badiyah', 'Al Bataeh', 'Al Bithnah', 'Al Faqa', 'Al Halah', 'Al Hamraniyah', 'Al Hamriyah', 'Al Jeer', 'Al Khawaneej', 'Al Lisaili', 'Al Madam', 'Al Manama', 'Al Mirfa', 'Al Qusaidat', 'Al Qor', 'Al Salamah', 'Al Shuwaib', 'Al Rafaah', 'Al Rashidya', 'Al Ruwayyah', 'Al Yahar', 'Asimah', 'Dalma', 'Dadna', 'Digdaga', 'Falaj Al Mualla', 'Ghalilah', 'Ghayl', 'Ghub', 'Habshan', 'Huwaylat', 'Khatt', 'Khor Khwair', 'Lahbab', 'Marawah', 'Masafi', 'Masfut', 'Mirbah', 'Mleiha', 'Nahil', 'Qidfa', "Sha'am", 'Sila', 'Sweihan', 'Wadi Shah', 'Zubarah']
+        for city in cities:
+            c = City(name=city)
+            with app.app_context():
+                db.session.add(c)
+                db.session.commit()
 
     from main import models
     with app.app_context():

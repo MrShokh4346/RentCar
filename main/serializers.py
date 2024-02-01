@@ -54,6 +54,8 @@ class OrderSerializer(Schema):
     status = fields.Boolean(required=True)
     from_date = fields.DateTime(format='%Y-%m-%d')
     to_date = fields.DateTime(format='%Y-%m-%d')
+    from_destination = fields.String(required=True)
+    to_destination = fields.String(required=True)
     child_sit = fields.Boolean()
     car_brand = fields.String(required=True, dump_only=True)
     car_model = fields.String(required=True, dump_only=True)
@@ -62,3 +64,21 @@ class OrderSerializer(Schema):
 
 order_schema = OrderSerializer()
 orders_schema = OrderSerializer(many=True)
+
+
+
+class CommentSerializer(Schema):
+    id = fields.Integer(dump_only=True)
+    author = fields.String(required=True)
+    body = fields.String(required=True)
+
+comment_schema = CommentSerializer()
+comments_schema = CommentSerializer(many=True)
+
+
+class CitySerializer(Schema):
+    id = fields.Integer(dump_only=True)
+    name = fields.String(required=True)
+
+city_schema = CitySerializer()
+cities_schema = CitySerializer(many=True)
