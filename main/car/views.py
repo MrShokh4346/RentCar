@@ -16,7 +16,7 @@ class CategoriesView(BaseView):
     def get(self):
         return jsonify(categories_schema.dump(self.model.query.all()))
         
-    @jwt_required()
+    #@jwt_required()
     @use_kwargs(CategorySerializer)
     def post(self, **kwargs):
         category = self.model(**kwargs)
@@ -32,14 +32,14 @@ class CategoryView(BaseView):
     def get(self, id):
         return jsonify(category_schema.dump(self.model.query.get(id)))
     
-    @jwt_required()
+    #@jwt_required()
     @use_kwargs(CategorySerializer)
     def put(self, id, **kwargs):
         category = self.model.query.get(id)
         category.update(**kwargs)
         return '', 204
     
-    @jwt_required()
+    #@jwt_required()
     def delete(self, id):
         category = self.model.query.get(id)
         db.session.delete(category)
@@ -59,7 +59,7 @@ class ImagePostView(BaseView):
     def __init__(self):
         self.model = Image
 
-    @jwt_required()
+    #@jwt_required()
     @use_kwargs(ImageSerializer)
     def post(self, **kwargs):
         image = self.model(**kwargs)
@@ -78,14 +78,14 @@ class ImageView(BaseView):
     def get(self, id=None):
         return jsonify(image_schema.dump(self.model.query.get(id)))
 
-    @jwt_required()
+    #@jwt_required()
     @use_kwargs(ImageSerializer)
     def put(self, id, **kwargs):
         image = self._get_item(id)
         image.update(**kwargs)
         return '', 204
     
-    @jwt_required()
+    #@jwt_required()
     def delete(self, id):
         image = self._get_item(id)
         db.session.delete(image)
@@ -108,7 +108,7 @@ class CarsView(BaseView):
     def get(self):
         return jsonify(cars_schema.dump(self.model.query.order_by(self.model.id.desc()).all()))
     
-    @jwt_required()
+    #@jwt_required()
     @use_kwargs(CarSerializer)
     def post(self, **kwargs):
         car = self.model(**kwargs)
@@ -129,14 +129,14 @@ class CarView(BaseView):
             return jsonify(car_schema.dump(self.model.query.get(id)))
         return jsonify(cars_schema.dump(self.model.query.order_by(self.model.id.desc()).all()))
     
-    @jwt_required()
+    #@jwt_required()
     @use_kwargs(CarSerializer)
     def put(self, id, **kwargs):
         car = self._get_item(id)
         car.update(**kwargs)
         return '', 204
     
-    @jwt_required()
+    #@jwt_required()
     def delete(self, id):
         car = self._get_item(id)
         db.session.delete(car)

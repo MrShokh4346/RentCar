@@ -66,6 +66,26 @@ order_schema = OrderSerializer()
 orders_schema = OrderSerializer(many=True)
 
 
+class OrderUpdateSerializer(Schema):
+    id = fields.Integer(dump_only=True)
+    customer_name = fields.String()
+    contact_number = fields.String()
+    delivery = fields.Boolean()
+    status = fields.Boolean()
+    from_date = fields.DateTime(format='%Y-%m-%d')
+    to_date = fields.DateTime(format='%Y-%m-%d')
+    from_destination = fields.String()
+    to_destination = fields.String()
+    child_sit = fields.Boolean()
+    car_brand = fields.String(dump_only=True)
+    car_model = fields.String(dump_only=True)
+    car = fields.Nested(CarSerializer, dump_only=True)
+    car_id = fields.Integer(load_only=True)
+
+order_update_schema = OrderUpdateSerializer()
+
+
+
 
 class CommentSerializer(Schema):
     id = fields.Integer(dump_only=True)
