@@ -39,11 +39,29 @@ class CarSerializer(Schema):
     price_use = fields.Float(required=True)
     price_euro = fields.Float(required=True)
     price_arab = fields.Float(required=True)
+    description = fields.String()
     category_id = fields.Integer(required=True, load_only=True)
     category = fields.Nested(CategorySerializer, dump_only=True)
 
 car_schema = CarSerializer()
 cars_schema = CarSerializer(many=True)
+
+
+class CarManySerializer(Schema):
+    id = fields.Integer(dump_only=True)
+    model = fields.String(required=True)
+    brand = fields.String(required=True)
+    doors = fields.Integer(required=True)
+    fuel = fields.String(required=True)
+    gear = fields.String(required=True)
+    baggage = fields.Float(required=True)
+    price_use = fields.Float(required=True)
+    price_euro = fields.Float(required=True)
+    price_arab = fields.Float(required=True)
+    category_id = fields.Integer(required=True, load_only=True)
+    category = fields.Nested(CategorySerializer, dump_only=True)
+
+cars_many_schema = CarManySerializer(many=True)
 
 
 class OrderSerializer(Schema):

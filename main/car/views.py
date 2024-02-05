@@ -98,15 +98,30 @@ class CarsByCategoryView(BaseView):
         self.model = Car
 
     def get(self, category_id):
-        return jsonify(cars_schema.dump(self.model.query.filter_by(category_id=category_id).order_by(self.model.id.desc()).all()))
-
+        page = int(request.args.get('page', 1))
+        cars = db.paginate(db.select(self.model).filter(self.model.category_id==category_id).order_by(self.model.id.desc()), page=page, per_page=8)
+        data = cars_many_schema.dump(cars)
+        count = 0
+        for car in cars:
+            image = Image.query.filter_by(car_id=car.id).first()
+            data[count]['image'] =[{"body":image.body}] if image else []
+            count += 1
+        return jsonify(data)
 
 class CarsView(BaseView): 
     def __init__(self):
         self.model = Car
 
     def get(self):
-        return jsonify(cars_schema.dump(self.model.query.order_by(self.model.id.desc()).all()))
+        page = int(request.args.get('page', 1))
+        cars = db.paginate(db.select(self.model).order_by(self.model.id.desc()), page=page, per_page=8)
+        data = cars_many_schema.dump(cars)
+        count = 0
+        for car in cars:
+            image = Image.query.filter_by(car_id=car.id).first()
+            data[count]['image'] =[{"body":image.body}] if image else []
+            count += 1
+        return jsonify(data)
     
     #@jwt_required()
     @use_kwargs(CarSerializer)
